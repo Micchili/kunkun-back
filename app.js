@@ -37,7 +37,7 @@ app.get('/post', (request, response) => {
     const subscriptionKey = process.env.API_KEY
     const endpoint = process.env.API_URL
 
-    if (request.body.image){ response.status("400").send("何も送られていません")}
+    if (request.body === undefined){ response.status("400").send("何も送られていません")}
     else { 
         const imageUrl = request.body.image
         console.log(imageUrl)
