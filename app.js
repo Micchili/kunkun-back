@@ -38,6 +38,8 @@ app.get('/post', (request, response) => {
     const endpoint = process.env.API_URL
     const imageUrl = request.body.image
 
+    if (imageUrl) response.status("400").send("何も送られていません")
+
     axios({
         method: 'post',
         url: endpoint,
