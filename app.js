@@ -31,3 +31,29 @@ app.get('/', (request, response) => {
         console.log(error)
     });
 });
+
+app.get('/post', (request, response) => {
+    var faceData
+    const subscriptionKey = process.env.API_KEY
+    const endpoint = process.env.API_URL
+    const imageUrl = request.body.image
+
+    axios({
+        method: 'post',
+        url: endpoint,
+        params: {
+            returnFaceAttributes: 'emotion'
+        },
+        data: {
+            url: imageUrl,
+        },
+        headers: { 'Ocp-Apim-Subscription-Key': subscriptionKey }
+    }).then((res) => {
+        res.data.forEach((face) => {
+            faceData = JSON.stringify(face.faceAttributes.emotion)
+            response.status(200).send(faceData)
+        });
+    }).catch((error) => {
+        console.log(error)
+    });
+});
