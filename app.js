@@ -6,21 +6,19 @@ const app = express();
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`Listening on port ${port}...`));
 
-app.get('/', (request, response) => {
+app.get('/get', (request, response) => {
     var faceData
     const subscriptionKey = process.env.API_KEY
     const endpoint = process.env.API_URL
     const imageUrl = 'https://www.pakutaso.com/shared/img/thumb/0I9A6766ISUMI_TP_V.jpg'
-
+    
     axios({
         method: 'post',
         url: endpoint,
         params: {
             returnFaceAttributes: 'emotion'
         },
-        data: {
-            url: imageUrl,
-        },
+        data:imageUrl,
         headers: { 'Ocp-Apim-Subscription-Key': subscriptionKey }
     }).then((res) => {
         res.data.forEach((face) => {
@@ -32,14 +30,14 @@ app.get('/', (request, response) => {
     });
 });
 
-app.get('/post', (request, response) => {
+app.post('/post', (request, response) => {
     var faceData
     const subscriptionKey = process.env.API_KEY
     const endpoint = process.env.API_URL
 
     if (request.body === undefined){ response.status("400").send("何も送られていません")}
-    else { 
-        const imageUrl = request.body.image
+    else {
+        const imageUrl = request.body
         console.log(imageUrl)
         axios({
             method: 'post',
@@ -47,9 +45,7 @@ app.get('/post', (request, response) => {
             params: {
                 returnFaceAttributes: 'emotion'
             },
-            data: {
-                url: imageUrl,
-            },
+            data: imageUrl,
             headers: { 'Ocp-Apim-Subscription-Key': subscriptionKey }
         }).then((res) => {
             res.data.forEach((face) => {
